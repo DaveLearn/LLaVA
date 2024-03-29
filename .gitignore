@@ -33,3 +33,9 @@ ckpts*
 
 # Demo
 serve_images/
+playground/data/coco
+playground/data/gqa
+playground/data/ocr_vqa
+playground/data/textvqa
+playground/data/vg
+playground/data/LLaVA-Pretrain
