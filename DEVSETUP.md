@@ -20,8 +20,14 @@ ln -s ~/datasets/LLaVA-InstructionTune/textvqa textvqa
 ln -s ~/datasets/LLaVA-InstructionTune/vg vg
 
 # train
+cd <project root>
+mkdir checkpoints
 
-bash ./scripts/v1_5/
+# single 24gb gpu pretrain
+bash ./scripts/v1_5/pretrain-single-gpu.sh
+
+# hpc
+~/hpc_launch.sh -2 -- ./scripts/v1_5/pretrain-2A100.sh
 
 
 

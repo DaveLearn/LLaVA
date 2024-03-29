@@ -53,7 +53,7 @@ exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", 
 exclude = ["assets*", "benchmark*", "docs", "dist*", "playground*", "scripts*", "tests*"]
 
 [tool.pdm]
-distribution = false
+distribution = true
 
 [tool.pdm.options]
 install = ["--no-isolation"]
