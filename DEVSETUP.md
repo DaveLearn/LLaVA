@@ -4,6 +4,8 @@ on HPC, export TMPDIR=/home/n11020211/tmp  so that pdm works
 
 Grab training data into ~/datasets/LLaVA-Pretrain and ~/datasets/LLaVA-InstructionTune
 
+run fix_mix665k.py since the json has all files as jpg while 355 are downloaded as png or gif
+
 $ mamba env create -f environment.yaml
 $ conda activate llava
 $ pdm install
