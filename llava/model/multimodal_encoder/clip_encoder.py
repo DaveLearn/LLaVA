@@ -3,6 +3,8 @@ import torch.nn as nn
 
 from transformers import CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
 
+from llava.model.multimodal_encoder.vqclip import VQAutoEncoderModel
+
 
 class CLIPVisionTower(nn.Module):
     def __init__(self, vision_tower, args, delay_load=False):
@@ -21,6 +23,9 @@ class CLIPVisionTower(nn.Module):
         else:
             self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
+        self.use_quantizer = getattr(args, 'mm_use_quantizer', False)
+
+
     def load_model(self, device_map=None):
         if self.is_loaded:
             print('{} is already loaded, `load_model` called again, skipping.'.format(self.vision_tower_name))
@@ -29,6 +34,9 @@ class CLIPVisionTower(nn.Module):
         self.image_processor = CLIPImageProcessor.from_pretrained(self.vision_tower_name)
         self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name, device_map=device_map)
         self.vision_tower.requires_grad_(False)
+
+        if self.use_quantizer:
+            self.quantizer =  VQAutoEncoderModel.from_pretrained('halfnelson/clip-vitL-14-336-QAE')
 
         self.is_loaded = True
 
@@ -49,11 +57,17 @@ class CLIPVisionTower(nn.Module):
             for image in images:
                 image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0), output_hidden_states=True)
                 image_feature = self.feature_select(image_forward_out).to(image.dtype)
+                if self.use_quantizer:
+                    image_feature, _ = self.quantizer.forward(image_feature)
+                    raise NotImplementedError("quantizer checkpoint")
+
                 image_features.append(image_feature)
         else:
             image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=self.dtype), output_hidden_states=True)
             image_features = self.feature_select(image_forward_outs).to(images.dtype)
-
+            if self.use_quantizer:
+                image_features, _ = self.quantizer.forward(image_features)
+                raise NotImplementedError("quantizer checkpoint")
         return image_features
 
     @property
