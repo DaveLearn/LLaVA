@@ -1,7 +1,7 @@
 from typing import TypedDict
 import torch
 from huggingface_hub import PyTorchModelHubMixin
-
+from einops import rearrange
 
 class VQAutoEncoder(torch.nn.Module):
     def __init__(self, source_dim: int = 1024, embed_dim: int = 256, num_embeddings: int = 16384):

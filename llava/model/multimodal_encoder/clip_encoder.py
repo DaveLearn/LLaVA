@@ -15,6 +15,7 @@ class CLIPVisionTower(nn.Module):
         self.vision_tower_name = vision_tower
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
+        self.use_quantizer = getattr(args, 'mm_use_quantizer', False)
 
         if not delay_load:
             self.load_model()
@@ -23,7 +24,6 @@ class CLIPVisionTower(nn.Module):
         else:
             self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
-        self.use_quantizer = getattr(args, 'mm_use_quantizer', False)
 
 
     def load_model(self, device_map=None):

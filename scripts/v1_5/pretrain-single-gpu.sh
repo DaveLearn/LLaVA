@@ -1,4 +1,5 @@
 #!/bin/bash
+export CUDA_VISIBLE_DEVICES=0
 export WANDB_PROJECT=llava
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
@@ -8,12 +9,13 @@ deepspeed llava/train/train_mem.py \
     --image_folder ./playground/data/LLaVA-Pretrain/images \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
+    --mm_use_quantizer True \
     --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/llava-v1.5-7b-pretrain \
+    --output_dir ./checkpoints/llava-v1.5-7b-pretrain-qae \
     --num_train_epochs 1 \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \
