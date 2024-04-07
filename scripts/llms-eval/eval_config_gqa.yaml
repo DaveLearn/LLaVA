@@ -1,0 +1,7 @@
+- model: llava
+  model_args: pretrained=./checkpoints/llava-1.5-7b-baseline,device_map=auto
+  tasks: gqa
+  batch_size: 1
+  log_samples: true
+  log_samples_suffix: gqa
+  output_path: "./eval_logs/"

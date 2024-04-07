@@ -1,0 +1,7 @@
+- model: llava
+  model_args: pretrained=./checkpoints/llava-1.5-7b-baseline
+  tasks: vqav2_val
+  batch_size: 1
+  log_samples: true
+  log_samples_suffix: vqav2_val
+  output_path: "./eval_logs/"

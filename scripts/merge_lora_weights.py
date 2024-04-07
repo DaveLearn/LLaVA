@@ -7,6 +7,8 @@ def merge_lora(args):
     model_name = get_model_name_from_path(args.model_path)
     tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, model_name, device_map='cpu')
 
+    # work around fact do_sample=False in the lmsys generation_config and latest transformers treats warnings as errors on save.
+    model.generation_config.do_sample=True
     model.save_pretrained(args.save_model_path)
     tokenizer.save_pretrained(args.save_model_path)
 
