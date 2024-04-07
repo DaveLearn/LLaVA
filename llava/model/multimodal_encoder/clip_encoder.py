@@ -37,6 +37,8 @@ class CLIPVisionTower(nn.Module):
 
         if self.use_quantizer:
             self.quantizer =  VQAutoEncoderModel.from_pretrained('halfnelson/clip-vitL-14-336-QAE')
+            self.quantizer.requires_grad_(False)
+            self.quantizer.eval()
 
         self.is_loaded = True
 
