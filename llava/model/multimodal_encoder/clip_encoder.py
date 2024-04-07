@@ -59,7 +59,6 @@ class CLIPVisionTower(nn.Module):
                 image_feature = self.feature_select(image_forward_out).to(image.dtype)
                 if self.use_quantizer:
                     image_feature, _ = self.quantizer.forward(image_feature)
-                    raise NotImplementedError("quantizer checkpoint")
 
                 image_features.append(image_feature)
         else:
@@ -67,7 +66,7 @@ class CLIPVisionTower(nn.Module):
             image_features = self.feature_select(image_forward_outs).to(images.dtype)
             if self.use_quantizer:
                 image_features, _ = self.quantizer.forward(image_features)
-                raise NotImplementedError("quantizer checkpoint")
+                
         return image_features
 
     @property
